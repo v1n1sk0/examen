@@ -1,4 +1,13 @@
-class Product:
+from abc import ABC, abstractmethod
+
+class AbstractProduct(ABC):
+    @abstractmethod
+    def get_description(self) -> str:
+        """Возвращает строку с описанием нашего продукта"""
+        pass
+
+
+class Product(AbstractProduct):
     def __init__(self, name: str, quantity: int, price: float):
         if quantity < 0:
             raise ValueError("Количество не может быть меньше нуля!")
@@ -14,7 +23,6 @@ class Product:
             if total_quantity == 0:
                 avg_price = 0
             else:
-                # Средневзвешенная цена
                 avg_price = ((self.price * self.quantity) + (other.price * other.quantity)) / total_quantity
             return Product(f"{self.name} + {other.name}", total_quantity, avg_price)
         raise TypeError("Можно складывать только объекты Product")
@@ -32,6 +40,9 @@ class Product:
     def __str__(self):
         return f"{self.name} (Количество: {self.quantity}, Цена: {self.price})"
 
+    def get_description(self) -> str:
+        return f"Товар: {self.name}"
+
 
 class Book(Product):
     def __init__(self, name: str, quantity: int, price: float, author: str):
@@ -41,6 +52,9 @@ class Book(Product):
     def __str__(self):
         return f"Книга: {self.name}, Автор: {self.author} (Количество: {self.quantity}, Цена: {self.price})"
 
+    def get_description(self) -> str:
+        return f"Книга: {self.name}, Автор: {self.author}"
+
 
 class Laptop(Product):
     def __init__(self, name: str, quantity: int, price: float, brand: str):
@@ -49,3 +63,6 @@ class Laptop(Product):
 
     def __str__(self):
         return f"Ноутбук: {self.name}, Бренд: {self.brand} (Количество: {self.quantity}, Цена: {self.price})"
+
+    def get_description(self) -> str:
+        return f"Ноутбук: {self.name}, Бренд: {self.brand}"
